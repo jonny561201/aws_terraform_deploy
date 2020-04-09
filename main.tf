@@ -38,6 +38,7 @@ resource "aws_lambda_function" "test_lambda" {
 
 resource "aws_s3_bucket" "lambda_deploy" {
   bucket = "jgraf-lambda-deploy"
+  force_destroy = true
   acl    = "private"
 
   tags = {
