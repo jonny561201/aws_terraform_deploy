@@ -1,12 +1,18 @@
 variable "commit" {}
+
 variable "s3_lambda_deploy_bucket" {
   type = string
   default = "jgraf-lambda-deploy"
 }
 
+variable "region" {
+  type = string
+  default = "us-east-2"
+}
+
 provider "aws" {
   version = "~> 2.0"
-  region = "us-east-2"
+  region = var.region
   shared_credentials_file = "/c/Users/g825714/.aws/"
 }
 
