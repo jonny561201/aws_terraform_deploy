@@ -1,20 +1,13 @@
-variable "commit" {}
-
 variable "s3_lambda_deploy_bucket" {
   type = string
   default = "jgraf-lambda-deploy"
 }
 
-variable "region" {
-  type = string
-  default = "us-east-2"
-}
+variable "app_version" {}
 
-provider "aws" {
-  version = "~> 2.0"
-  region = var.region
-  shared_credentials_file = "/c/Users/g825714/.aws/"
-}
+variable "region" {}
+
+variable "deploy_env" {}
 
 //creates a custom policy document with multiple policies applied
 data "aws_iam_policy_document" "example_policy_doc" {
@@ -70,7 +63,7 @@ resource "aws_lambda_function" "test_lambda" {
   handler = "lambda_test.test_function"
   runtime = "python3.7"
   s3_bucket = aws_s3_bucket.lambda_deploy.bucket
-  s3_key = "lambda_test_${var.commit}.zip"
+  s3_key = "lambda_test_${var.app_version}.zip"
   depends_on = [
     aws_s3_bucket.lambda_deploy]
 }
@@ -82,7 +75,7 @@ resource "aws_s3_bucket" "lambda_deploy" {
 
   tags = {
     Name = "Lambda Deploy"
-    Environment = "Dev"
+    Environment = var.deploy_env
   }
 }
 
@@ -122,6 +115,7 @@ resource "aws_lambda_permission" "apigw_lambda" {
 }
 
 resource "aws_api_gateway_method_response" "response_200" {
+  depends_on = [aws_lambda_function.test_lambda]
   rest_api_id = aws_api_gateway_rest_api.lambda_api.id
   resource_id = aws_api_gateway_resource.MyDemoResource.id
   http_method = aws_api_gateway_method.MyDemoMethod.http_method
@@ -129,6 +123,7 @@ resource "aws_api_gateway_method_response" "response_200" {
 }
 
 resource "aws_api_gateway_integration_response" "MyDemoIntegrationResponse" {
+  depends_on = [aws_lambda_function.test_lambda]
   rest_api_id = aws_api_gateway_rest_api.lambda_api.id
   resource_id = aws_api_gateway_resource.MyDemoResource.id
   http_method = aws_api_gateway_method.MyDemoMethod.http_method
@@ -139,5 +134,5 @@ resource "aws_api_gateway_deployment" "MyDemoDeployment" {
   depends_on = [aws_api_gateway_integration.MyDemoIntegration]
 
   rest_api_id = aws_api_gateway_rest_api.lambda_api.id
-  stage_name  = "test"
+  stage_name  = var.deploy_env
 }
