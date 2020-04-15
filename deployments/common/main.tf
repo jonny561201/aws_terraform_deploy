@@ -1,13 +1,10 @@
-variable "s3_lambda_deploy_bucket" {
-  type = string
-  default = "jgraf-lambda-deploy"
-}
-
 variable "app_version" {}
 
 variable "region" {}
 
 variable "deploy_env" {}
+
+variable "s3_lambda_deploy_bucket" {}
 
 //creates a custom policy document with multiple policies applied
 data "aws_iam_policy_document" "example_policy_doc" {

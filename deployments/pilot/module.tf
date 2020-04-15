@@ -7,15 +7,15 @@ variable "region" {
 
 variable "deploy_env" {
   type = string
-  default = "prod"
+  default = "pilot"
 }
 
 variable "s3_lambda_deploy_bucket" {
   type = string
-  default = "jgraf-lambda-deploy-prod"
+  default = "jgraf-lambda-deploy-pilot"
 }
 
-module "lambda_deploy_prod" {
+module "lambda_deploy_pilot" {
   source = "../common"
 
   region = var.region
