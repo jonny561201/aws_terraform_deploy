@@ -7,7 +7,7 @@ variable "deploy_env" {}
 variable "s3_lambda_deploy_bucket" {}
 
 //creates a custom policy document with multiple policies applied
-data "aws_iam_policy_document" "example_policy_doc" {
+data "aws_iam_policy_document" "s3_policy_doc" {
   statement {
     sid = "1"
     actions = [
@@ -21,10 +21,10 @@ data "aws_iam_policy_document" "example_policy_doc" {
 }
 
 //creates a policy with the document of existing policies applied
-resource "aws_iam_policy" "example_policy" {
+resource "aws_iam_policy" "s3_policy" {
   name = "example_policy"
   path = "/"
-  policy = data.aws_iam_policy_document.example_policy_doc.json
+  policy = data.aws_iam_policy_document.s3_policy_doc.json
 }
 
 //creates a role with default lambda policies
@@ -49,9 +49,9 @@ EOF
 }
 
 //attaches my custom policy to my basic lambda role
-resource "aws_iam_role_policy_attachment" "test-attach" {
+resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   role = aws_iam_role.iam_for_lambda.name
-  policy_arn = aws_iam_policy.example_policy.arn
+  policy_arn = aws_iam_policy.s3_policy.arn
 }
 
 resource "aws_lambda_function" "test_lambda" {
@@ -61,8 +61,7 @@ resource "aws_lambda_function" "test_lambda" {
   runtime = "python3.7"
   s3_bucket = aws_s3_bucket.lambda_deploy.bucket
   s3_key = "lambda_test_${var.app_version}.zip"
-  depends_on = [
-    aws_s3_bucket.lambda_deploy]
+  depends_on = [aws_s3_bucket.lambda_deploy]
 }
 
 resource "aws_s3_bucket" "lambda_deploy" {
@@ -129,7 +128,6 @@ resource "aws_api_gateway_integration_response" "MyDemoIntegrationResponse" {
 
 resource "aws_api_gateway_deployment" "MyDemoDeployment" {
   depends_on = [aws_api_gateway_integration.MyDemoIntegration]
-
   rest_api_id = aws_api_gateway_rest_api.lambda_api.id
   stage_name  = var.deploy_env
 }
