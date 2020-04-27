@@ -77,7 +77,7 @@ resource "aws_s3_bucket" "lambda_deploy" {
 
 
 resource "aws_api_gateway_rest_api" "lambda_api" {
-  name = "my-test-api"
+  name = "my-test-api-${var.deploy_env}"
   description = "This is my API for demonstration purposes"
 }
 
