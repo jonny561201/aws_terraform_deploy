@@ -22,14 +22,14 @@ data "aws_iam_policy_document" "s3_policy_doc" {
 
 //creates a policy with the document of existing policies applied
 resource "aws_iam_policy" "s3_policy" {
-  name = "example_policy"
+  name = "example_policy_${var.deploy_env}"
   path = "/"
   policy = data.aws_iam_policy_document.s3_policy_doc.json
 }
 
 //creates a role with default lambda policies
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = "iam_for_lambda_${var.deploy_env}"
 
   assume_role_policy = <<EOF
 {
@@ -55,7 +55,7 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
 }
 
 resource "aws_lambda_function" "test_lambda" {
-  function_name = "test-function"
+  function_name = "test-function-${var.deploy_env}"
   role = aws_iam_role.iam_for_lambda.arn
   handler = "lambda_test.test_function"
   runtime = "python3.7"
