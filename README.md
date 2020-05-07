@@ -1,4 +1,11 @@
 # Demo Terraform Multi-Env Deploy without Workspaces
+### Why Terraform?
+* Version your Infrastructure 
+* Simplified configuration files over CloudFormation
+* Infrastructure as code that is in lockstep with feature deployments
+* Supports a Myriad of Cloud Providers
+* Can spawn up infrastructure across different Cloud Platforms
+
 ### Steps
 1. Zip application to deploy & append version number to file
 2. cd into directory of environment to deploy
