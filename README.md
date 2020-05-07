@@ -5,6 +5,8 @@
 * Infrastructure as code that is in lockstep with feature deployments
 * Supports a Myriad of Cloud Providers
 * Can spawn up infrastructure across different Cloud Platforms
+* Infrastructure orchestration
+* One click process to set/teardown everything
 
 ### Steps
 1. Zip application to deploy & append version number to file
