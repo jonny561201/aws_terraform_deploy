@@ -54,16 +54,9 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_policy.arn
 }
 
-resource "aws_lambda_function" "test_lambda" {
-  function_name = "test-function-${var.deploy_env}"
-  role = aws_iam_role.iam_for_lambda.arn
-  handler = "lambda_test.test_function"
-  runtime = "python3.7"
-  s3_bucket = aws_s3_bucket.lambda_deploy.bucket
-  s3_key = "lambda_test_${var.app_version}.zip"
-  depends_on = [aws_s3_bucket.lambda_deploy]
-}
 
+
+//create S3 bucket
 resource "aws_s3_bucket" "lambda_deploy" {
   bucket = var.s3_lambda_deploy_bucket
   force_destroy = true
@@ -76,6 +69,31 @@ resource "aws_s3_bucket" "lambda_deploy" {
 }
 
 
+
+//copy zip file to S3
+resource "aws_s3_bucket_object" "upload_project" {
+  bucket = var.s3_lambda_deploy_bucket
+  key    = "lambda_test_${var.app_version}.zip"
+  source = "../../lambda_test_${var.app_version}.zip"
+  depends_on = [aws_s3_bucket.lambda_deploy]
+}
+
+
+
+//create lambda
+resource "aws_lambda_function" "test_lambda" {
+  function_name = "test-function-${var.deploy_env}"
+  role = aws_iam_role.iam_for_lambda.arn
+  handler = "lambda_test.test_function"
+  runtime = "python3.7"
+  s3_bucket = aws_s3_bucket.lambda_deploy.bucket
+  s3_key = "lambda_test_${var.app_version}.zip"
+  depends_on = [aws_s3_bucket.lambda_deploy, aws_s3_bucket_object.upload_project]
+}
+
+
+
+//api gateway
 resource "aws_api_gateway_rest_api" "lambda_api" {
   name = "my-test-api-${var.deploy_env}"
   description = "This is my API for demonstration purposes"
