@@ -4,7 +4,7 @@ VERSION=1.0.0
 WHITE='\033[0m'
 GREEN='\033[0;32m'
 PRESENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ZIP_DIR=lambda_test_
+ZIP_DIR=lambda_test_${VERSION}
 
 
 function zipFiles {
@@ -14,25 +14,32 @@ function zipFiles {
 
 function createDirectories {
   echo -e "${GREEN}Creating zip directory and copying python files${WHITE}"
-  mkdir "${ZIP_DIR}${VERSION}"
-  cp app.py lambda_test_${VERSION}
-  cp -r src lambda_test_${VERSION}
+  mkdir "${ZIP_DIR}"
+  cp app.py ${ZIP_DIR}
+  cp -r src ${ZIP_DIR}
 }
 
 function cleanupDirectory {
   echo -e "${GREEN}Deleting original zip directory${WHITE}"
-  rm -rf lambda_test_${VERSION}
+  rm -rf ${ZIP_DIR}
 }
 
 function installPythonDependencies {
   echo -e "${GREEN}Installing Python files to directory${WHITE}"
   UPDATED_REQUIREMENTS=$(cat requirements.txt | grep -v boto3)
   UPDATED_REQUIREMENTS=$(echo $UPDATED_REQUIREMENTS | tr '\r\n' ' ')
-  pip install --target="${PRESENT_DIR}/${ZIP_DIR}${VERSION}" -U ${UPDATED_REQUIREMENTS}
+  pip install --target="${PRESENT_DIR}/${ZIP_DIR}" -U ${UPDATED_REQUIREMENTS}
+}
+
+function deleteExistingFolders {
+      if [[ -d "$ZIP_DIR" ]]; then
+        echo "Deleting existing zip directory: ${ZIP_DIR}"
+        rm -rf ${ZIP_DIR}
+      fi
 }
 
 
-# TODO: delete directory if exists
+deleteExistingFolders
 createDirectories
 installPythonDependencies
 zipFiles
