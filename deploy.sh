@@ -8,24 +8,24 @@ ZIP_DIR=lambda_test_${VERSION}
 
 
 function zipFiles {
-  echo -e "${GREEN}Zipping up directory${WHITE}"
+  echo -e "${GREEN}----------Zipping up directory----------${WHITE}"
   powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('lambda_test_${VERSION}', 'lambda_test_${VERSION}.zip'); }"
 }
 
 function createDirectories {
-  echo -e "${GREEN}Creating zip directory and copying python files${WHITE}"
+  echo -e "${GREEN}----------Creating zip directory and copying python files----------${WHITE}"
   mkdir "${ZIP_DIR}"
   cp app.py ${ZIP_DIR}
   cp -r src ${ZIP_DIR}
 }
 
 function cleanupDirectory {
-  echo -e "${GREEN}Deleting original zip directory${WHITE}"
+  echo -e "${GREEN}----------Deleting original zip directory----------${WHITE}"
   rm -rf ${ZIP_DIR}
 }
 
 function installPythonDependencies {
-  echo -e "${GREEN}Installing Python files to directory${WHITE}"
+  echo -e "${GREEN}----------Installing Python files to directory----------${WHITE}"
   UPDATED_REQUIREMENTS=$(cat requirements.txt | grep -v boto3)
   UPDATED_REQUIREMENTS=$(echo $UPDATED_REQUIREMENTS | tr '\r\n' ' ')
   pip install --target="${PRESENT_DIR}/${ZIP_DIR}" -U ${UPDATED_REQUIREMENTS}
@@ -33,14 +33,14 @@ function installPythonDependencies {
 
 function deleteExistingFolders {
   if [[ -d "$ZIP_DIR" ]]; then
-    echo "Deleting existing zip directory: ${ZIP_DIR}"
+    echo "----------Deleting existing zip directory: ${ZIP_DIR}----------"
     rm -rf ${ZIP_DIR}
   fi
 }
 
 function deleteExistingZipFile {
   if [[ -f "${ZIP_DIR}.zip" ]]; then
-    echo "Deleting existing zip file: ${ZIP_DIR}.zip"
+    echo "----------Deleting existing zip file: ${ZIP_DIR}.zip----------"
     rm -rf "${ZIP_DIR}.zip"
   fi
 }
