@@ -26,10 +26,13 @@ function cleanupDirectory {
 
 function installPythonDependencies {
   echo -e "${GREEN}Installing Python files to directory${WHITE}"
-  pip install --target="${PRESENT_DIR}/${ZIP_DIR}${VERSION}" -Ur requirements.txt
-  popd
+  UPDATED_REQUIREMENTS=$(cat requirements.txt | grep -v boto3)
+  UPDATED_REQUIREMENTS=$(echo $UPDATED_REQUIREMENTS | tr '\r\n' ' ')
+  pip install --target="${PRESENT_DIR}/${ZIP_DIR}${VERSION}" -U ${UPDATED_REQUIREMENTS}
 }
 
+
+# TODO: delete directory if exists
 createDirectories
 installPythonDependencies
 zipFiles
