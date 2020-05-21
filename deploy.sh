@@ -32,14 +32,22 @@ function installPythonDependencies {
 }
 
 function deleteExistingFolders {
-      if [[ -d "$ZIP_DIR" ]]; then
-        echo "Deleting existing zip directory: ${ZIP_DIR}"
-        rm -rf ${ZIP_DIR}
-      fi
+  if [[ -d "$ZIP_DIR" ]]; then
+    echo "Deleting existing zip directory: ${ZIP_DIR}"
+    rm -rf ${ZIP_DIR}
+  fi
+}
+
+function deleteExistingZipFile {
+  if [[ -f "${ZIP_DIR}.zip" ]]; then
+    echo "Deleting existing zip file: ${ZIP_DIR}.zip"
+    rm -rf "${ZIP_DIR}.zip"
+  fi
 }
 
 
 deleteExistingFolders
+deleteExistingZipFile
 createDirectories
 installPythonDependencies
 zipFiles
