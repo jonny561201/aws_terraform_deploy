@@ -13,9 +13,13 @@ data "aws_iam_policy_document" "s3_policy_doc" {
     actions = [
       "s3:GetBucketLocation",
       "s3:ListBucket",
+      "sqs:SendMessage",
+      "sqs:GetQueueUrl",
+      "sqs:ReceiveMessage",
     ]
     resources = [
       "arn:aws:s3:::${var.s3_lambda_deploy_bucket}",
+      aws_sqs_queue.terraform_queue.arn,
     ]
   }
 }
@@ -90,6 +94,17 @@ resource "aws_lambda_function" "test_lambda" {
   s3_key = "lambda_test_${var.app_version}.zip"
   depends_on = [aws_s3_bucket.lambda_deploy, aws_s3_bucket_object.upload_project]
 }
+
+
+resource "aws_sqs_queue" "terraform_queue" {
+  name = "jgraf-awesome-queue"
+  delay_seconds = 10
+  max_message_size = 2048
+  message_retention_seconds = 86400
+  receive_wait_time_seconds = 10
+}
+
+
 
 
 
