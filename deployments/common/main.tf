@@ -18,7 +18,8 @@ data "aws_iam_policy_document" "s3_policy_doc" {
       "sqs:ReceiveMessage",
     ]
     resources = [
-      "arn:aws:s3:::${var.s3_lambda_deploy_bucket}",
+      aws_s3_bucket.lambda_deploy.arn,
+//      "arn:aws:s3:::${var.s3_lambda_deploy_bucket}",
       aws_sqs_queue.terraform_queue.arn,
     ]
   }
