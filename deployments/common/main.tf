@@ -4,8 +4,6 @@ variable "region" {}
 
 variable "deploy_env" {}
 
-variable "s3_lambda_deploy_bucket" {}
-
 //creates a custom policy document with multiple policies applied
 data "aws_iam_policy_document" "s3_policy_doc" {
   statement {
@@ -19,7 +17,6 @@ data "aws_iam_policy_document" "s3_policy_doc" {
     ]
     resources = [
       aws_s3_bucket.lambda_deploy.arn,
-//      "arn:aws:s3:::${var.s3_lambda_deploy_bucket}",
       aws_sqs_queue.terraform_queue.arn,
     ]
   }
@@ -60,10 +57,9 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
 }
 
 
-
 //create S3 bucket
 resource "aws_s3_bucket" "lambda_deploy" {
-  bucket = var.s3_lambda_deploy_bucket
+  bucket = "jgraf-lambda-deploy-${var.deploy_env}"
   force_destroy = true
   acl = "private"
 
@@ -74,15 +70,13 @@ resource "aws_s3_bucket" "lambda_deploy" {
 }
 
 
-
 //copy zip file to S3
 resource "aws_s3_bucket_object" "upload_project" {
-  bucket = var.s3_lambda_deploy_bucket
+  bucket = "jgraf-lambda-deploy-${var.deploy_env}"
   key    = "lambda_test_${var.app_version}.zip"
   source = "../../lambda_test_${var.app_version}.zip"
   depends_on = [aws_s3_bucket.lambda_deploy]
 }
-
 
 
 //create lambda
@@ -104,9 +98,6 @@ resource "aws_sqs_queue" "terraform_queue" {
   message_retention_seconds = 86400
   receive_wait_time_seconds = 10
 }
-
-
-
 
 
 //api gateway
