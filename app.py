@@ -6,7 +6,6 @@ REGION = 'us-east-1'
 QUEUE = 'jgraf-awesome-queue'
 
 
-#event.body
 def test_function(event, context):
     get_google_response()
     sqs_queue = __get_sqs_queue()

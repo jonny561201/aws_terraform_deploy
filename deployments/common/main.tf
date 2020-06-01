@@ -14,10 +14,13 @@ data "aws_iam_policy_document" "s3_policy_doc" {
       "sqs:SendMessage",
       "sqs:GetQueueUrl",
       "sqs:ReceiveMessage",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
     ]
     resources = [
       aws_s3_bucket.lambda_deploy.arn,
       aws_sqs_queue.terraform_queue.arn,
+      aws_cloudwatch_log_group.lambda-cloudwatch-group.arn
     ]
   }
 }
@@ -73,7 +76,7 @@ resource "aws_s3_bucket" "lambda_deploy" {
 //copy zip file to S3
 resource "aws_s3_bucket_object" "upload_project" {
   bucket = "jgraf-lambda-deploy-${var.deploy_env}"
-  key    = "lambda_test_${var.app_version}.zip"
+  key = "lambda_test_${var.app_version}.zip"
   source = "../../lambda_test_${var.app_version}.zip"
   depends_on = [aws_s3_bucket.lambda_deploy]
 }
@@ -90,7 +93,13 @@ resource "aws_lambda_function" "test_lambda" {
   depends_on = [aws_s3_bucket.lambda_deploy, aws_s3_bucket_object.upload_project]
 }
 
+//create lambda cloudwatch logs
+resource "aws_cloudwatch_log_group" "lambda-cloudwatch-group" {
+  name = "/aws/lambda/${aws_lambda_function.test_lambda.function_name}"
+  retention_in_days = 7
+}
 
+//create sqs queue
 resource "aws_sqs_queue" "terraform_queue" {
   name = "jgraf-awesome-queue"
   delay_seconds = 10
@@ -154,5 +163,5 @@ resource "aws_api_gateway_integration_response" "MyDemoIntegrationResponse" {
 resource "aws_api_gateway_deployment" "MyDemoDeployment" {
   depends_on = [aws_api_gateway_integration.MyDemoIntegration]
   rest_api_id = aws_api_gateway_rest_api.lambda_api.id
-  stage_name  = var.deploy_env
+  stage_name = var.deploy_env
 }
