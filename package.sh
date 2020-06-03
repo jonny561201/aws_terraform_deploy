@@ -1,8 +1,12 @@
 #!/bin/bash
 
-VERSION=1.0.0
+YELLOW='\033[1;33m'
 WHITE='\033[0m'
 GREEN='\033[0;32m'
+echo -e "${YELLOW}Enter App Version:${WHITE}"
+read VERSION
+
+
 PRESENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ZIP_DIR=lambda_test_${VERSION}
 
