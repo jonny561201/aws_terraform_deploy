@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket = "jgraf-terraform-pilot"
+    bucket = "jgraf-pfg-terraform-prod"
     key    = "statefile"
-    region = "us-east-2"
+    region = "us-east-1"
     endpoint = ""
   }
 }
