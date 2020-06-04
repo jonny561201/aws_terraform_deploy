@@ -1,9 +1,8 @@
+import os
+
 from boto3 import Session
 
 from src.api_service import get_google_response
-
-REGION = 'us-east-1'
-QUEUE = 'jgraf-awesome-queue'
 
 
 def test_function(event, context):
@@ -14,6 +13,6 @@ def test_function(event, context):
 
 
 def __get_sqs_queue():
-    aws_session = Session(region_name=REGION)
+    aws_session = Session(region_name=os.environ['AWS_REGION'])
     sqs = aws_session.resource('sqs')
-    return sqs.get_queue_by_name(QueueName=QUEUE)
+    return sqs.get_queue_by_name(QueueName=os.environ['AWS_QUEUE'])
