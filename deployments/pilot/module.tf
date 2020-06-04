@@ -10,7 +10,7 @@ variable "deploy_env" {
   default = "pilot"
 }
 
-module "lambda_deploy_pilot" {
+module "lambda_deploy" {
   source = "../common"
 
   region = var.region
