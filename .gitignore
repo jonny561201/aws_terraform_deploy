@@ -2,3 +2,7 @@
 .idea
 .terraform
 keys.json
+*.jar
+*/target
+*/venv
+*.iml

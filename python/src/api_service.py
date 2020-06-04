@@ -1,7 +1,8 @@
 import requests
 
 
-def get_google_response():
-    url = 'https://www.google.com'
+def call_api(url):
     response = requests.get(url)
-    return response.content
+    content = response.content
+    print('api call response: ' + content)
+    return content
