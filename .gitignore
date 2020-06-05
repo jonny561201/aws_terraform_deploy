@@ -8,3 +8,4 @@ keys.json
 *.iml
 plan.prod
 plan.pilot
+*/node_modules
