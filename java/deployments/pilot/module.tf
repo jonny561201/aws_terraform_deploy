@@ -10,10 +10,16 @@ variable "deploy_env" {
   default = "pilot"
 }
 
+variable "demo_type" {
+  type = string
+  default = "java"
+}
+
 module "lambda_deploy" {
   source = "../common"
 
   region = var.region
   deploy_env = var.deploy_env
   app_version = var.app_version
+  demo_type = var.demo_type
 }

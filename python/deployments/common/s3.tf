@@ -1,6 +1,6 @@
 //create S3 bucket
-resource "aws_s3_bucket" "lambda_deploy" {
-  bucket = "jgraf-lambda-deploy-${var.deploy_env}"
+resource "aws_s3_bucket" "PythonLambdaDeploy" {
+  bucket = "${var.demo_type}-${var.deploy_env}-lambda-deploy-coaching-demo"
   force_destroy = true
   acl = "private"
 
@@ -12,10 +12,9 @@ resource "aws_s3_bucket" "lambda_deploy" {
 
 
 //copy zip file to S3
-resource "aws_s3_bucket_object" "upload_project" {
-  bucket = "jgraf-lambda-deploy-${var.deploy_env}"
+resource "aws_s3_bucket_object" "PythonUploadProject" {
+  bucket = aws_s3_bucket.PythonLambdaDeploy.bucket
   key = "lambda_test_${var.app_version}.zip"
   source = "../../lambda_test_${var.app_version}.zip"
-  etag = filemd5("../../lambda_test_${var.app_version}.zip")
-  depends_on = [aws_s3_bucket.lambda_deploy]
+  depends_on = [aws_s3_bucket.PythonLambdaDeploy]
 }
