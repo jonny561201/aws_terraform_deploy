@@ -1,6 +1,6 @@
 //create S3 bucket
 resource "aws_s3_bucket" "PythonLambdaDeploy" {
-  bucket = "${var.demo_type}-${var.deploy_env}-lambda-deploy-coaching-demo"
+  bucket = "${var.deploy_env}-${var.demo_type}-lambda-deploy-coaching-demo"
   force_destroy = true
   acl = "private"
 
@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "PythonLambdaDeploy" {
 
 //copy zip file to S3
 resource "aws_s3_bucket_object" "PythonUploadProject" {
-  bucket = aws_s3_bucket.PythonLambdaDeploy.bucket
+  bucket = "${var.deploy_env}-${var.demo_type}-lambda-deploy-coaching-demo"
   key = "lambda_test_${var.app_version}.zip"
   source = "../../lambda_test_${var.app_version}.zip"
   depends_on = [aws_s3_bucket.PythonLambdaDeploy]
