@@ -5,6 +5,7 @@ resource "aws_lambda_function" "test_lambda" {
   handler = "com.App::handleRequest"
   runtime = "java8"
   memory_size = 256
+  timeout = 30
   s3_bucket = aws_s3_bucket.lambda_deploy.bucket
   s3_key = "JavaLambda-${var.app_version}-SNAPSHOT.jar"
   environment {
