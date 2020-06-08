@@ -9,7 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "https": "1.0.0"
+    "@babel/core": "7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/register": "7.10.1",
+    "https": "1.0.0",
+    "node-fetch": "2.6.0"
   },
   "devDependencies": {
     "node-lambda": "^0.16.0"
