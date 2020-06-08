@@ -5,7 +5,8 @@ resource "aws_lambda_function" "PythonLambda" {
   handler = "app.handle_request"
   runtime = "python3.7"
   s3_bucket = aws_s3_bucket.PythonLambdaDeploy.bucket
-  s3_key = "lambda_test_${var.app_version}.zip"
+  s3_key = "lambda_python.zip"
+  source_code_hash = filemd5("../../lambda_python.zip")
   environment {
     variables = {
       AWS_QUEUE = aws_sqs_queue.PythonSqsQueue.name

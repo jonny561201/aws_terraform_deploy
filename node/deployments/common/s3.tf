@@ -3,7 +3,6 @@ resource "aws_s3_bucket" "NodeLambdaDeploy" {
   bucket = "${var.deploy_env}-${var.demo_type}-lambda-deploy-coaching-demo"
   force_destroy = true
   acl = "private"
-
   tags = {
     Name = "Lambda Deploy"
     Environment = var.deploy_env
@@ -15,6 +14,7 @@ resource "aws_s3_bucket" "NodeLambdaDeploy" {
 resource "aws_s3_bucket_object" "NodeUploadProject" {
   bucket = "${var.deploy_env}-${var.demo_type}-lambda-deploy-coaching-demo"
   key = "lambda_node.zip"
-  source = "../../lambda_test_${var.app_version}.zip"
+  source = "../../lambda_node.zip"
   depends_on = [aws_s3_bucket.NodeLambdaDeploy]
+  etag = filemd5("../../lambda_node.zip")
 }

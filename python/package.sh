@@ -3,17 +3,14 @@
 YELLOW='\033[1;33m'
 WHITE='\033[0m'
 GREEN='\033[0;32m'
-echo -e "${YELLOW}Enter App Version:${WHITE}"
-read VERSION
-
 
 PRESENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ZIP_DIR=lambda_test_${VERSION}
+ZIP_DIR=lambda_python
 
 
 function zipFiles {
   echo -e "${GREEN}----------Zipping up directory----------${WHITE}"
-  powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('lambda_test_${VERSION}', 'lambda_test_${VERSION}.zip'); }"
+  powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('${ZIP_DIR}', '${ZIP_DIR}.zip'); }"
 }
 
 function createDirectories {

@@ -14,7 +14,8 @@ resource "aws_s3_bucket" "PythonLambdaDeploy" {
 //copy zip file to S3
 resource "aws_s3_bucket_object" "PythonUploadProject" {
   bucket = "${var.deploy_env}-${var.demo_type}-lambda-deploy-coaching-demo"
-  key = "lambda_test_${var.app_version}.zip"
-  source = "../../lambda_test_${var.app_version}.zip"
+  key = "lambda_python.zip"
+  source = "../../lambda_python.zip"
   depends_on = [aws_s3_bucket.PythonLambdaDeploy]
+  etag = filemd5("../../lambda_python.zip")
 }
