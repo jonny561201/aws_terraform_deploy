@@ -1,5 +1,3 @@
-variable "app_version" {}
-
 variable "region" {
   type = string
   default = "us-east-1"
@@ -20,6 +18,5 @@ module "lambda_deploy" {
 
   region = var.region
   deploy_env = var.deploy_env
-  app_version = var.app_version
   demo_type =  var.demo_type
 }
