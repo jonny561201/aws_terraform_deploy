@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "jgraf-pfg-terraform-prod"
+    bucket = "prod-java-coaching-demo-statefile"
     key    = "statefile"
     region = "us-east-1"
     endpoint = ""

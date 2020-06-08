@@ -1,5 +1,5 @@
 //create sqs queue
-resource "aws_sqs_queue" "PythonSqsQueue" {
+resource "aws_sqs_queue" "NodeSqsQueue" {
   name = "${var.demo_type}-${var.deploy_env}-queue-coaching-demo"
   max_message_size = 2048
   message_retention_seconds = 86400

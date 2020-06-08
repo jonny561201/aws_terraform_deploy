@@ -6,3 +6,6 @@ keys.json
 */target
 */venv
 *.iml
+plan.prod
+plan.pilot
+*/node_modules

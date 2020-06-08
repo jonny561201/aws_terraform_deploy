@@ -10,10 +10,16 @@ variable "deploy_env" {
   default = "prod"
 }
 
+variable "demo_type" {
+  type = string
+  default = "python"
+}
+
 module "lambda_deploy_prod" {
   source = "../common"
 
   region = var.region
   deploy_env = var.deploy_env
   app_version = var.app_version
+  demo_type =  var.demo_type
 }

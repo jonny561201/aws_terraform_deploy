@@ -1,0 +1,17 @@
+{
+  "name": "lambda_node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "package": "node-lambda package --packageDirectory ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "https": "1.0.0"
+  },
+  "devDependencies": {
+    "node-lambda": "^0.16.0"
+  }
+}
