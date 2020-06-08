@@ -14,7 +14,8 @@ resource "aws_s3_bucket" "JavaLambdaDeploy" {
 //copy zip file to S3
 resource "aws_s3_bucket_object" "JavaUploadProject" {
   bucket = "${var.deploy_env}-${var.demo_type}-lambda-deploy-coaching-demo"
-  key = "JavaLambda-${var.app_version}-SNAPSHOT.jar"
-  source = "../../target/JavaLambda-${var.app_version}-SNAPSHOT.jar"
+  key = "LambdaJava-1.0.jar"
+  source = "../../target/LambdaJava-1.0.jar"
   depends_on = [aws_s3_bucket.JavaLambdaDeploy]
+  etag = filemd5("../../target/LambdaJava-1.0.jar")
 }

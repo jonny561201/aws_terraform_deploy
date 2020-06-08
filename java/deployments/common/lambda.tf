@@ -4,10 +4,11 @@ resource "aws_lambda_function" "JavaLambda" {
   role = aws_iam_role.JavaIAMForLambda.arn
   handler = "com.App::handleRequest"
   runtime = "java8"
-  memory_size = 256
+  memory_size = 512
   timeout = 30
   s3_bucket = aws_s3_bucket.JavaLambdaDeploy.bucket
-  s3_key = "JavaLambda-${var.app_version}-SNAPSHOT.jar"
+  s3_key = "LambdaJava-1.0.jar"
+  source_code_hash = filemd5("../../target/LambdaJava-1.0.jar")
   environment {
     variables = {
       AWS_QUEUE = aws_sqs_queue.JavaSqsQueue.name
