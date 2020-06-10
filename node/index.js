@@ -2,7 +2,7 @@ require('@babel/register');
 const AWS = require('aws-sdk');
 const { call_api } = require('./src/api_service');
 
-exports.handler = async function(event) {
+exports.handler = async function(event, context) {
     await call_api('http://www.google.com');
     putMessageOnQueue('Hey Jude');
     return 'success'
