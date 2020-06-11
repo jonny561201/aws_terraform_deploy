@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export const call_api = async (url) => {
+export const callApi = async (url) => {
     const requestOptions = {
         method: "GET"
     };
