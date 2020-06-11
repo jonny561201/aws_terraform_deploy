@@ -9,3 +9,4 @@ keys.json
 plan.prod
 plan.pilot
 */node_modules
+*__pycache__
